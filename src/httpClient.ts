@@ -28,22 +28,55 @@ export class HttpClient {
    * Fetch a web3 request with id `1` to maximise cache hits.
    *
    * @param path required, the path to fetch, joined by the client url.
-   * @param body web3 post request body with id
+   * @param body required, web3 post request body with id
    * @param init initializer for the request, recursively merges with client initializer.
+   * @param cacheTtl number of seconds to cache the response.
+   * @param staleTtl number of seconds to serve the response stale.
    */
   public async fetchWeb3(
     path: string,
     body: any,
     init?: RequestInit,
+    cacheTtl?: number,
+    staleTtl?: number,
   ): Promise<Response> {
 
     // Store the original id from the request
     // and replace it with a const id
     const id = body.id;
+    const method = body.method;
+    const params = body.params;
+
     body.id = 1;
+
+    let cacheHeader;
+    let defaultBlock;
+    switch (method) {
+      case "eth_getBalance":
+      case "eth_getCode":
+      case "eth_getTransactionCount":
+      case "eth_getBalance":
+      case "eth_call":
+        defaultBlock = params[1];
+        break;
+      case "eth_getStorageAt":
+        defaultBlock = params[2];
+        break;
+    };
+
+    switch (defaultBlock) {
+      case "earliest":
+      case "latest":
+      case "pending":
+        cacheHeader = this.cacheHeader(-1, -1);
+        break;
+      default:
+        cacheHeader = this.cacheHeader(cacheTtl, staleTtl);
+    };
 
     let response = await this.fetch(
       path,
+      cacheHeader,
       Object.assign({ body: JSON.stringify(body) }, init || {}),
     )
 
@@ -59,14 +92,11 @@ export class HttpClient {
    *
    * @param path required, the path to fetch, joined by the client url.
    * @param init initializer for the request, recursively merges with client initializer.
-   * @param cacheTtl required, number of seconds to cache the response.
-   * @param staleTtl required, number of seconds to serve the response stale.
    */
   public async fetch(
     path: string,
+    cacheHeader: string,
     init?: RequestInit,
-    cacheTtl?: number,
-    staleTtl?: number,
   ): Promise<Response> {
     const key = await this.cacheKey(path, init)
 
@@ -76,7 +106,7 @@ export class HttpClient {
 
       response.headers.set(
         'Cache-control',
-        this.cacheHeader(cacheTtl, staleTtl),
+        cacheHeader,
       )
       await this.cache.put(key, response.clone())
     }
@@ -156,6 +186,7 @@ export class HttpClient {
   private cacheHeader(cacheTtl?: number, staleTtl?: number): string {
     var cache = 'public'
 
+    if (!cacheTtl || !staleTtl) return cache;
     if (cacheTtl < 0 && staleTtl < 0) cache = 'no-store'
     if (cacheTtl >= 0) cache += `, max-age=${cacheTtl}`
     if (staleTtl >= 0) cache += `, stale-while-revalidate=${staleTtl}`
