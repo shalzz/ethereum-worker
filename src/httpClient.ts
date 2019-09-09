@@ -36,16 +36,22 @@ export class HttpClient {
     body: any,
     init?: RequestInit,
   ): Promise<Response> {
+
+    // Store the original id from the request
+    // and replace it with a const id
     const id = body.id;
-    // body.id = 1;
-    console.log(id);
+    body.id = 1;
 
     let response = await this.fetch(
       path,
       Object.assign({ body: JSON.stringify(body) }, init || {}),
     )
 
-    return response
+    // Restore the id to the response object
+    let resBody = await response.json();
+    resBody.id = id;
+
+    return new Response(JSON.stringify(resBody), response);
   }
 
   /**
@@ -75,7 +81,6 @@ export class HttpClient {
       await this.cache.put(key, response.clone())
     }
 
-    console.log(response);
     return response
   }
 
