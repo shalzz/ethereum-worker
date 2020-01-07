@@ -1,5 +1,5 @@
 {
-  "name": "neuraljoint-ethereum-worker-2",
+  "name": "neuraljoint-ethereum-worker",
   "version": "1.0.0",
   "description": "Cloudflare worker TypeScript template",
   "main": "index.js",

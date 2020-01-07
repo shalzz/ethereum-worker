@@ -1,6 +1,6 @@
 name = "neuraljoint-ethereum-worker"
 type = "webpack"
 zone_id = ""
-private = false
 account_id = "17deee69f71f5b1d11794dc064e7a6c1"
 route = ""
+workers_dev = true

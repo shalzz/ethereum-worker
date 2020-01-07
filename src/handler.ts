@@ -64,7 +64,7 @@ export async function handleRequest(request: Request) {
     return Response.redirect(redirectLocation, 301);
   }
 
-  let body = await request.json();
+  const body = await request.json();
 
   if (!body.method || !allowedMethods.includes(body.method)) {
     return new Response('Method not allowed', { status: 403 });
