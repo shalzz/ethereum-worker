@@ -8,7 +8,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.tx.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: {{ include "ethereum.name" . }}
@@ -26,7 +26,7 @@ spec:
         command: ["/bin/sh"]
         args:
         - "-c"
-        - "geth --rpc --rpcaddr 0.0.0.0 --rpcapi={{ .Values.tx.args.rpcapi }} --rpccorsdomain='*' --ws --networkid=${NETWORK_ID} --verbosity=5"
+        - "geth --rpc --rpcaddr 0.0.0.0 --rpcapi={{ .Values.tx.args.rpcapi }} --rpccorsdomain='*' --ws --networkid=${NETWORK_ID} --verbosity=3"
         env:
         - name: NETWORK_ID
           valueFrom:

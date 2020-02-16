@@ -1,4 +1,4 @@
-name = "neuraljoint-ethereum-worker"
+name = "ethereum-worker"
 type = "webpack"
 zone_id = ""
 account_id = "17deee69f71f5b1d11794dc064e7a6c1"

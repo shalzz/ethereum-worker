@@ -1,7 +1,7 @@
 {
-  "name": "neuraljoint-ethereum-worker",
+  "name": "ethereum-worker",
   "version": "1.0.0",
-  "description": "Cloudflare worker TypeScript template",
+  "description": "Cloudflare worker for caching ethereum json-rpc responses",
   "main": "index.js",
   "scripts": {
     "build": "webpack",

@@ -1,0 +1,15 @@
+# TCP service key:value pairs
+# Ref: https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx/examples/tcp
+##
+tcp:
+  30303: "default/ethereum:30303"
+  8545: "default/ethereum:8545"
+  8546: "default/ethereum:8546"
+#  8080: "default/example-tcp-svc:9000"
+
+# UDP service key:value pairs
+# Ref: https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx/examples/udp
+##
+udp:
+  30303: "default/ethereum:30303"
+#  53: "kube-system/kube-dns:53"
