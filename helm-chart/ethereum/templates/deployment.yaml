@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ethereum.fullname" . }}-geth-tx
+  labels:
+    app: {{ include "ethereum.name" . }}
+    chart: {{ include "ethereum.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.tx.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "ethereum.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "ethereum.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        command: ["/bin/sh"]
+        args:
+        - "-c"
+        - "geth --rpc --rpcaddr 0.0.0.0 --rpcapi={{ .Values.tx.args.rpcapi }} --rpccorsdomain='*' --ws --networkid=${NETWORK_ID} --verbosity=5"
+        env:
+        - name: NETWORK_ID
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "ethereum.fullname" . }}-geth-config
+              key: networkid
+        ports:
+        - name: rpc
+          containerPort: 8545
+        - name: ws
+          containerPort: 8546
+        - name: discovery-udp
+          containerPort: 30303
+          protocol: UDP
+        - name: discovery-tcp
+          containerPort: 30303
+        volumeMounts:
+        - name: data
+          mountPath: /root/.ethereum
+        volumeMounts:
+        - name: data
+          mountPath: /geth
+      volumes:
+      - name: data
+        emptyDir: {}
+      - name: config
+        configMap:
+          name: {{ include "ethereum.fullname" . }}-geth-config
