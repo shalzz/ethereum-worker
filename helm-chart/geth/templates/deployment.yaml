@@ -24,10 +24,13 @@ spec:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
-        command: ["/bin/sh"]
+        command: ["geth"]
         args:
-        - "-c"
-        - "geth --verbosity=3 --config=/config/geth.toml"
+        - "--verbosity=3"
+        - "--config=/config/geth.toml"
+        {{- if eq .Values.genesis.networkId 3.0 }}
+        - "--testnet"
+        {{- end }}
         ports:
         - name: rpc
           containerPort: 8545
