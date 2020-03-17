@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: tcp-services-configmap
-  namespace: default
-data:
-  8545: default/{{ include "ethereum.fullname" . }}:8545
-  8546: default/{{ include "ethereum.fullname" . }}:8546
-  30303: default/{{ include "ethereum.fullname" . }}:30303

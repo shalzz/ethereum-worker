@@ -10,7 +10,7 @@ keywords:
 maintainers:
 - email: kubernetes@jasonpoon.ca
   name: jpoon
-name: ethereum
+name: geth
 sources:
 - https://github.com/ethereum/go-ethereum
 version: 1.0.0

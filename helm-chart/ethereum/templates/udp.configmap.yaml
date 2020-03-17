@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: udp-services-configmap
-  namespace: default
-data:
-  30303: default/{{ include "ethereum.fullname" . }}:30303

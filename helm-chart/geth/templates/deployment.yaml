@@ -26,13 +26,7 @@ spec:
         command: ["/bin/sh"]
         args:
         - "-c"
-        - "geth --rpc --rpcaddr 0.0.0.0 --rpcapi={{ .Values.tx.args.rpcapi }} --rpccorsdomain='*' --ws --networkid=${NETWORK_ID} --verbosity=3"
-        env:
-        - name: NETWORK_ID
-          valueFrom:
-            configMapKeyRef:
-              name: {{ include "ethereum.fullname" . }}-geth-config
-              key: networkid
+        - "geth --rpc --rpcaddr 0.0.0.0 --rpcapi={{ .Values.tx.args.rpcapi }} --rpccorsdomain='*' --ws --verbosity=3"
         ports:
         - name: rpc
           containerPort: 8545
@@ -46,12 +40,16 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /root/.ethereum
-        volumeMounts:
-        - name: data
-          mountPath: /geth
+        - name: config
+          mountPath: /config
       volumes:
-      - name: data
-        emptyDir: {}
-      - name: config
-        configMap:
-          name: {{ include "ethereum.fullname" . }}-geth-config
+        - name: config
+          configMap:
+            name: {{ include "ethereum.fullname" . }}-geth-config
+        - name: data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "ethereum.fullname" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end -}}
