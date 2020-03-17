@@ -1,0 +1,133 @@
+# Default values for parity.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+terminationGracePeriodSeconds: 60
+
+image:
+  repository: parity/parity
+  tag: v2.5.13-stable
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Don't use spaces or special chars
+parity:
+  chain: "ropsten"
+  base_path: "/data"
+  footprint:
+    cache_size_db: 4096
+    cache_size_blocks: 200
+    cache_size_queue: 200
+    cache_size_state: 250
+    cache_size: 6144
+    db_compaction: ssd
+  network:
+    min_peers: 250
+    max_peers: 300
+    # f.e. ["enode://...@203.0.113.1:30303","enode://...@203.0.113.2:30304", "enode://...@203.0.113.3:30304"]
+    bootnodes: []
+  misc:
+    logging: info
+
+livenessProbe:
+  initialDelaySeconds: 300
+  periodSeconds: 300
+  timeoutSeconds: 10
+  successThreshold: 1
+  failureThreshold: 2
+
+service:
+  type: ClusterIP
+  rpcPortName: &rpcPortName jsonrpc
+  rpcPort: &rpcPort 8545
+  wsPort: &wsPort 8546
+  wsPortName: &wsPortName web-socket
+  p2pPort0: &p2pPort0 30303
+  p2pPortName0: &p2pPortName0 p2p
+  p2pPortProtocol0: &p2pPortProtocol0 TCP
+  p2pPort1: &p2pPort1 30303
+  p2pPortName1: &p2pPortName1 p2p-discovery
+  p2pPortProtocol1: &p2pPortProtocol1 UDP
+  ports:
+    - port: *rpcPort
+      name: *rpcPortName
+    - port: *wsPort
+      name: *wsPortName
+    - port: *p2pPort0
+      name: *p2pPortName0
+      protocol: *p2pPortProtocol0
+    - port: *p2pPort1
+      name: *p2pPortName1
+      protocol: *p2pPortProtocol1
+
+externalLB: false
+externalLBIP: ""
+externalLBSourceRanges: {}
+#  - 198.51.100.1/32
+#  - 198.51.100.2/32
+
+externalLBp2p: false
+externalLBp2pIP: 203.0.113.0
+
+externalLBp2pDiscovery: false
+externalLBp2pDiscoveryIP: 203.0.113.0
+
+internalLB: false
+internalLBIP: ""
+
+persistence:
+  enabled: true
+#  storageClass: "standard"
+  accessMode: ReadWriteOnce
+  size: "100Gi"
+
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  requests:
+    cpu: "800m"
+    memory: "1000Mi"
+  limits:
+    cpu: "3000m"
+    memory: "12000Mi"
+
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: "parity"
+              parity/chain: "mainnet"
+          topologyKey: failure-domain.beta.kubernetes.io/zone
+
+

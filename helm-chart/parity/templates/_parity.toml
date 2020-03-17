@@ -1,0 +1,68 @@
+[parity]
+# Parity continously syncs the chain
+mode = "active"
+# Stable
+release_track = "stable"
+
+# https://wiki.parity.io/Chain-specification#chain-presets-available
+# mainnet, kovan, classic, ...
+chain = "{{ .Values.parity.chain }}"
+
+# Blockchain and settings will be stored in {{ .Values.parity.base_path }}.
+base_path = "{{ .Values.parity.base_path }}"
+
+[network]
+# Parity will sync by downloading latest state first. Node will be operational in couple minutes.
+warp = false
+# Parity will try to maintain connection to at least {{ .Values.parity.network.min_peers }} peers.
+min_peers = {{ .Values.parity.network.min_peers }}
+# Parity will maintain at most {{ .Values.parity.network.max_peers }} peers.
+max_peers = {{ .Values.parity.network.max_peers }}
+{{ if .Values.parity.network.bootnodes }}
+#Override the bootnodes from our chain. NODES should be comma-delimited enodes.
+bootnodes = {{ .Values.parity.network.bootnodes | toJson }}
+{{ end }}
+[rpc]
+#  JSON-RPC will be listening for connections on IP all.
+interface = "all"
+# Only selected APIs will be exposed over this interface.
+apis = ["eth", "pubsub", "net", "parity", "private", "parity_pubsub", "traces", "rpc", "shh", "shh_pubsub", "web3"]
+# Threads for handling incoming connections for HTTP JSON-RPC server.
+server_threads = 6
+# Turn on additional processing threads for JSON-RPC servers (all transports). Setting this to a non-zero value allows parallel execution of cpu-heavy queries.
+# removed in 2.7
+#processing_threads = 7
+
+[websockets]
+# UI won't work and WebSockets server will be not available.
+disable = true
+
+[footprint]
+# Compute and Store tracing data. (Enables trace_* APIs).
+tracing = "on"
+# Database compaction type. TYPE may be one of: ssd - suitable for SSDs and fast HDDs; hdd - suitable for slow HDDs; auto - determine automatically. (default: auto)
+db_compaction = "{{ .Values.parity.footprint.db_compaction }}"
+# Keep all state trie data. No pruning.
+pruning = "archive"
+# Number of threads will vary depending on the workload. Not guaranteed to be faster.
+scale_verifiers = true
+
+# Will keep up to {{ .Values.parity.cache_size_db }}MB data in Database cache.
+cache_size_db = {{ .Values.parity.footprint.cache_size_db }}
+# Will keep up to {{ .Values.parity.footprint.cache_size_blocks }}MB data in Blockchain cache.
+cache_size_blocks = {{ .Values.parity.footprint.cache_size_blocks }}
+# Will keep up to {{ .Values.parity.footprint.cache_size_queue }}MB of blocks in block import queue.
+cache_size_queue = {{ .Values.parity.footprint.cache_size_queue }}
+# Will keep up to {{ .Values.parity.footprint.cache_size_state }}MB data in State cache.
+cache_size_state = {{ .Values.parity.footprint.cache_size_state }}
+# If defined will never use more then {{ .Values.parity.footprint.cache_size }}MB for all caches. (Overrides other cache settings).
+cache_size = {{ .Values.parity.footprint.cache_size }}
+
+[snapshots]
+disable_periodic = true
+
+[misc]
+# Logging pattern (`<module>=<level>`, e.g. `own_tx=trace`).
+logging = "{{ .Values.parity.misc.logging }}"
+log_file = "{{ .Values.parity.base_path }}/parity.log"
+color = true

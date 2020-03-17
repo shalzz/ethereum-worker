@@ -1,0 +1,29 @@
+{{ if .Values.internalLB }}
+## use this to aggregate internal pods behind
+## a single load balanced IP
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-ilb
+  labels:
+    chain: eth
+{{ include "parity.labels" . | indent 4 }}
+  annotations:
+    cloud.google.com/load-balancer-type: "Internal"
+    cloud.google.com/network-tier: "PREMIUM"
+spec:
+  type: LoadBalancer
+  {{ if .Values.internalLBIP }}
+  loadBalancerIP: {{ .Values.internalLBIP }}
+  {{ end }}
+  ports:
+    - name: {{ .Values.service.rpcPortName }}
+      port: {{ .Values.service.rpcPort }}
+      targetPort: {{ .Values.service.rpcPortName }}
+    - name: {{ .Values.service.wsPortName }}
+      port: {{ .Values.service.wsPort }}
+      targetPort: {{ .Values.service.wsPortName }}
+  selector:
+    app.kubernetes.io/name: {{ include "parity.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ end }}
