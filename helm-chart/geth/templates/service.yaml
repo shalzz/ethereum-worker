@@ -11,7 +11,7 @@ spec:
   selector:
     app: {{ include "ethereum.name" . }}
     release: {{ .Release.Name }}
-  type: {{ .Values.tx.service.type }}
+  type: {{ .Values.service.type }}
   ports:
     - name: rpc
       port: 8545

@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+terminationGracePeriodSeconds: 60
 
 imagePullPolicy: IfNotPresent
 
@@ -13,12 +14,10 @@ nodeSelector: {}
 image:
   repository: ethereum/client-go
   tag: v1.9.12
-tx:
-  # transaction nodes
-  service:
-    type: ClusterIP
-  args:
-    rpcapi: 'eth,net,web3'
+
+service:
+  type: ClusterIP
+
 genesis:
   # geth genesis block
   networkId: 3 # roptsen

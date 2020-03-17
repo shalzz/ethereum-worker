@@ -19,6 +19,7 @@ spec:
         app: {{ include "ethereum.name" . }}
         release: {{ .Release.Name }}
     spec:
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
@@ -26,7 +27,7 @@ spec:
         command: ["/bin/sh"]
         args:
         - "-c"
-        - "geth --rpc --rpcaddr 0.0.0.0 --rpcapi={{ .Values.tx.args.rpcapi }} --rpccorsdomain='*' --ws --verbosity=3"
+        - "geth --verbosity=3 --config=/config/geth.toml"
         ports:
         - name: rpc
           containerPort: 8545
