@@ -51,6 +51,38 @@ spec:
           mountPath: /root/.ethereum
         - name: config
           mountPath: /config
+      {{- if .Values.argo.enabled }}
+      - name: argo-tunnel
+        image: crazymax/cloudflared:2020.2.1
+        imagePullPolicy: IfNotPresent
+        command: ["cloudflared", "tunnel"]
+        args:
+        - --url=127.0.0.1:{{ .Values.service.rpcPort }}
+        - --no-autoupdate
+      {{- if .Values.argo.hostname }}
+        - --hostname={{- .Values.argo.hostname -}}
+      {{- end }}
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        resources:
+          limits:
+            cpu: 100m
+            memory: 150Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+      {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "ethereum.fullname" . }}
   volumeClaimTemplates:
     - metadata:
         name: {{ include "ethereum.fullname" . }}

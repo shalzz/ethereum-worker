@@ -38,3 +38,10 @@ persistence:
   accessMode: ReadWriteOnce
   size: 100Gi
 
+argo:
+  enabled: true
+  ## Specify the hostname the argo tunnel should be available from.
+  ## Leave this empty to use the free argo tunnel
+  ## and get a randomly generated domain that you can find out from
+  ## the logs of the argo-tunnel container.
+  hostname:
