@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "ethereum.fullname" . }}-geth-config
+  name: {{ include "ethereum.fullname" . }}
   labels:
-    app: {{ include "ethereum.name" . }}
-    chart: {{ include "ethereum.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ include "ethereum.name" . }}
+    helm.sh/chart: {{ include "ethereum.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
   geth.toml: |-
   {{- include (print $.Template.BasePath "/_geth.toml") . | nindent 4 }}

@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ethereum.fullname" . }}-geth-tx
+  name: {{ include "ethereum.fullname" . }}
   labels:
-    app: {{ include "ethereum.name" . }}
-    chart: {{ include "ethereum.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app.kubernetes.io/app: {{ include "ethereum.name" . }}
+    helm.sh/chart: {{ include "ethereum.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "ethereum.name" . }}
-      release: {{ .Release.Name }}
+      app.kubernetes.io/app: {{ include "ethereum.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ include "ethereum.name" . }}
-        release: {{ .Release.Name }}
+        app.kubernetes.io/app: {{ include "ethereum.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
@@ -37,14 +37,14 @@ spec:
         {{- end }}
         ports:
         - name: rpc
-          containerPort: 8545
+          containerPort: {{ .Values.service.rpcPort }}
         - name: ws
-          containerPort: 8546
-        - name: discovery-udp
-          containerPort: 30303
-          protocol: UDP
+          containerPort: {{ .Values.service.wsPort }}
         - name: discovery-tcp
-          containerPort: 30303
+          containerPort: {{ .Values.service.p2pPort }}
+        - name: discovery-udp
+          containerPort: {{ .Values.service.p2pPort }}
+          protocol: UDP
         volumeMounts:
         - name: data
           mountPath: /root/.ethereum
@@ -53,7 +53,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: {{ include "ethereum.fullname" . }}-geth-config
+            name: {{ include "ethereum.fullname" . }}
         - name: data
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:

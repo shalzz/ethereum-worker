@@ -8,7 +8,7 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ include "ethereum.name" . }}
     helm.sh/chart: {{ include "ethereum.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:

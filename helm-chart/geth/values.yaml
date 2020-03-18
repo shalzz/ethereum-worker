@@ -17,6 +17,9 @@ image:
 
 service:
   type: ClusterIP
+  rpcPort: 8545
+  wsPort: 8546
+  p2pPort: 30303
 
 genesis:
   # geth genesis block
