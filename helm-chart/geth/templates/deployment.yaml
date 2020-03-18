@@ -18,6 +18,8 @@ spec:
       labels:
         app: {{ include "ethereum.name" . }}
         release: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
@@ -28,6 +30,8 @@ spec:
         args:
         - "--verbosity=3"
         - "--config=/config/geth.toml"
+        - "--rpc"
+        - "--ws"
         {{- if eq .Values.genesis.networkId 3.0 }}
         - "--testnet"
         {{- end }}
