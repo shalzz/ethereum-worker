@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "ethereum.fullname" . }}
   labels:
@@ -8,7 +8,8 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  serviceName: "{{ include "ethereum.fullname" . }}"
+  replicas: {{ .Values.replicaCount }} # by default is 1
   selector:
     matchLabels:
       app.kubernetes.io/app: {{ include "ethereum.name" . }}
@@ -46,18 +47,24 @@ spec:
           containerPort: {{ .Values.service.p2pPort }}
           protocol: UDP
         volumeMounts:
-        - name: data
+        - name: {{ include "ethereum.fullname" . }}
           mountPath: /root/.ethereum
         - name: config
           mountPath: /config
-      volumes:
-        - name: config
-          configMap:
-            name: {{ include "ethereum.fullname" . }}
-        - name: data
-        {{- if .Values.persistence.enabled }}
-          persistentVolumeClaim:
-            claimName: {{ .Values.persistence.existingClaim | default (include "ethereum.fullname" .) }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "ethereum.fullname" . }}
+      spec:
+        accessModes:
+        - {{.Values.persistence.accessMode }}
+        {{- if .Values.persistence.storageClass }}
+        {{- if (eq "-" .Values.persistence.storageClass) }}
+        storageClassName: ""
         {{- else }}
-          emptyDir: {}
-        {{- end -}}
+        storageClassName: "{{ .Values.persistence.storageClass }}"
+        {{- end }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        volumeMode: Filesystem
