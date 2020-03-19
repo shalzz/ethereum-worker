@@ -80,6 +80,37 @@ spec:
           timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           successThreshold: {{ .Values.livenessProbe.successThreshold }}
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+      {{- if .Values.argo.enabled }}
+      - name: argo-tunnel
+        image: crazymax/cloudflared:2020.2.1
+        imagePullPolicy: IfNotPresent
+        command: ["cloudflared", "tunnel"]
+        args:
+        - --url=127.0.0.1:{{ .Values.service.rpcPort }}
+        - --no-autoupdate
+        {{- if .Values.argo.hostname }}
+        - --hostname={{- .Values.argo.hostname -}}
+        {{- end }}
+        {{- if .Values.argo.certSecretName }}
+        - --origincert=/etc/cloudflared/cert.pem
+        {{- end }}
+        {{- if .Values.argo.lbPool }}
+        - --lb-pool {{ .Values.argo.lbPool }}
+        {{- end }}
+        resources:
+          limits:
+            cpu: 100m
+            memory: 150Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+        {{- if .Values.argo.certSecretName }}
+        volumeMounts:
+        - mountPath: /etc/cloudflared
+          name: tunnel-secret
+          readOnly: true
+        {{- end }}
+      {{- end }}
       volumes:
         - name: parity-config
           configMap:
@@ -87,6 +118,11 @@ spec:
         - name: scripts
           configMap:
             name: "{{ .Release.Name }}-scripts"
+        {{- if .Values.argo.certSecretName }}
+        - name: tunnel-secret
+          secret:
+            secretName: {{ .Values.argo.certSecretName }}
+        {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: parity-pvc

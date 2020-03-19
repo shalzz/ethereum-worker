@@ -68,15 +68,6 @@ spec:
         {{- if .Values.argo.lbPool }}
         - --lb-pool {{ .Values.argo.lbPool }}
         {{- end }}
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
         resources:
           limits:
             cpu: 100m

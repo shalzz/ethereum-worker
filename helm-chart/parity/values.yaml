@@ -130,4 +130,21 @@ affinity:
               parity/chain: "mainnet"
           topologyKey: failure-domain.beta.kubernetes.io/zone
 
-
+argo:
+  enabled: true
+  ## Specify the hostname the argo tunnel should be available from.
+  ## Leave this empty to use the free argo tunnel
+  ## and get a randomly generated trycloudflare subdomain name
+  ## that you can find out from the logs of the argo-tunnel container.
+  hostname:
+  ## If you are using a paid argo tunnel by specifying a hostname
+  ## then you need to provide a Kubernetes secret object of the certificate
+  ## authenticating your Cloudflare account.
+  ## For details on how to create the secret object, see:
+  ## https://developers.cloudflare.com/argo-tunnel/reference/sidecar/#secret-generation
+  certSecretName:
+  ## If you have Cloudflare Load Balancing enabled on your account
+  ## and you have more than one replica running, then specify a
+  ## unique name for the load balancing pool to be used by all
+  ## the replicas and load-balance among them.
+  lbPool:
