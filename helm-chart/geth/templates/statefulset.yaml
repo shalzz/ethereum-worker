@@ -65,6 +65,9 @@ spec:
         {{- if .Values.argo.certSecretName }}
         - --origincert=/etc/cloudflared/cert.pem
         {{- end }}
+        {{- if .Values.argo.lbPool }}
+        - --lb-pool {{ .Values.argo.lbPool }}
+        {{- end }}
         resources:
           limits:
             cpu: 100m

@@ -47,7 +47,12 @@ argo:
   hostname:
   ## If you are using a paid argo tunnel by specifying a hostname
   ## then you need to provide a Kubernetes secret object of the certificate
-  ## authenticating your cloudflare account.
+  ## authenticating your Cloudflare account.
   ## For details on how to create the secret object, see:
   ## https://developers.cloudflare.com/argo-tunnel/reference/sidecar/#secret-generation
   certSecretName:
+  ## If you have Cloudflare Load Balancing enabled on your account
+  ## and you have more than one replica running, then specify a
+  ## unique name for the load balancing pool to be used by all
+  ## the replicas and load-balance among them.
+  lbPool:
