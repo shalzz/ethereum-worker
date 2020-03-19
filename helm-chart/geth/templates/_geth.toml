@@ -6,9 +6,14 @@ LightPeers = 100
 [Node]
 # DataDir = "/root/.ethereum/testnet"
 HTTPPort = 8545
-HTTPVirtualHosts = ["localhost"]
 HTTPModules = ["net", "web3", "eth"]
+{{- if .Values.argo.hostname }}
+HTTPCors = ["{{ .Values.argo.hostname }}"]
+HTTPVirtualHosts = ["{{ .Values.argo.hostname }}"]
+{{- else }}
 HTTPCors = ["*"]
+HTTPVirtualHosts = ["*"]
+{{- end }}
 WSPort = 8546
 WSModules = ["net", "web3", "eth"]
 GraphQLPort = 8547
