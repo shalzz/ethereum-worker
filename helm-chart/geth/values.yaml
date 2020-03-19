@@ -42,6 +42,12 @@ argo:
   enabled: true
   ## Specify the hostname the argo tunnel should be available from.
   ## Leave this empty to use the free argo tunnel
-  ## and get a randomly generated domain that you can find out from
-  ## the logs of the argo-tunnel container.
+  ## and get a randomly generated trycloudflare subdomain name
+  ## that you can find out from the logs of the argo-tunnel container.
   hostname:
+  ## If you are using a paid argo tunnel by specifying a hostname
+  ## then you need to provide a Kubernetes secret object of the certificate
+  ## authenticating your cloudflare account.
+  ## For details on how to create the secret object, see:
+  ## https://developers.cloudflare.com/argo-tunnel/reference/sidecar/#secret-generation
+  certSecretName:

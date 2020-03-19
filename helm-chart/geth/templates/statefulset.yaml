@@ -59,18 +59,12 @@ spec:
         args:
         - --url=127.0.0.1:{{ .Values.service.rpcPort }}
         - --no-autoupdate
-      {{- if .Values.argo.hostname }}
+        {{- if .Values.argo.hostname }}
         - --hostname={{- .Values.argo.hostname -}}
-      {{- end }}
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
+        {{- end }}
+        {{- if .Values.argo.certSecretName }}
+        - --origincert=/etc/cloudflared/cert.pem
+        {{- end }}
         resources:
           limits:
             cpu: 100m
@@ -78,11 +72,22 @@ spec:
           requests:
             cpu: 10m
             memory: 20Mi
+        {{- if .Values.argo.certSecretName }}
+        volumeMounts:
+        - mountPath: /etc/cloudflared
+          name: tunnel-secret
+          readOnly: true
+        {{- end }}
       {{- end }}
       volumes:
         - name: config
           configMap:
             name: {{ include "ethereum.fullname" . }}
+        {{- if .Values.argo.certSecretName }}
+        - name: tunnel-secret
+          secret:
+            secretName: {{ .Values.argo.certSecretName }}
+        {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: {{ include "ethereum.fullname" . }}
