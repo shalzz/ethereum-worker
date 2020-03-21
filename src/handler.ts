@@ -5,7 +5,7 @@ import { HttpClient } from './httpClient';
  * @param {Request} request
  */
 export async function handleRequest(request: Request) {
-  const redirectLocation = 'https://neuraljoint.com';
+  const redirectLocation = 'https://github.com/shalzz/ethereum-worker';
   const url = new URL(
     'https://munich-larry-tf-rating.trycloudflare.com',
   );

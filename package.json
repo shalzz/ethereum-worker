@@ -16,9 +16,10 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^1.0.7",
     "@types/chai": "^4.2.11",
-    "@types/mocha": "^5.2.7",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.9.2",
     "chai": "^4.2.0",
-    "mocha": "^6.2.2",
+    "mocha": "^7.1.1",
     "prettier": "^1.19.1",
     "service-worker-mock": "^2.0.5",
     "source-map-loader": "^0.2.4",
