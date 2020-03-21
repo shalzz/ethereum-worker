@@ -1,7 +1,9 @@
 name = "ethereum-worker"
 type = "webpack"
 webpack_config = "webpack.config.js"
-zone_id = ""
-account_id = "e921f16c347adc83c0b29f1f758a860c"
-route = ""
+
 workers_dev = true
+account_id = "e921f16c347adc83c0b29f1f758a860c"
+zone_id = ""
+route = ""
+vars = { TUNNEL_URL = "https://infinite-ak-network-personals.trycloudflare.com" }
