@@ -7,7 +7,7 @@ import { HttpClient } from './httpClient';
 export async function handleRequest(request: Request) {
   const redirectLocation = 'https://neuraljoint.com';
   const url = new URL(
-    'https://compensation-wrestling-golf-idle.trycloudflare.com',
+    'https://munich-larry-tf-rating.trycloudflare.com',
   );
   const headers = new Headers();
   headers.append('content-type', 'application/json;charset=UTF-8');

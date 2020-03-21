@@ -6,7 +6,7 @@ const mode = process.env.NODE_ENV || 'production'
 module.exports = {
   output: {
     filename: `worker.${mode}.js`,
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'worker'),
   },
   devtool: 'source-map',
   mode,
