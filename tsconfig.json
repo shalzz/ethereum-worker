@@ -5,7 +5,7 @@
     "target": "esnext",
     "lib": ["esnext", "webworker"],
     "alwaysStrict": true,
-    "strict": true,
+    "strict": false,
     "preserveConstEnums": true,
     "moduleResolution": "node",
     "sourceMap": true,
@@ -17,7 +17,8 @@
     "./test/*.ts",
     "./src/**/*.ts",
     "./test/**/*.ts",
-    "./node_modules/@cloudflare/workers-types/index.d.ts"
+    "./node_modules/@cloudflare/workers-types/index.d.ts",
+    "./node_modules/types-cloudflare-worker/global.d.ts"
   ],
   "exclude": ["node_modules/", "worker/"]
 }

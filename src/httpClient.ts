@@ -152,7 +152,7 @@ export class HttpClient {
     init = Object.assign({ headers: {} }, init || {})
 
     for (var kv of Object.entries(this.init.headers)) {
-      init.headers[kv[0]] = [1]
+      init.headers[kv[0]] = kv[1]
     }
 
     return Object.assign(init, this.init)
