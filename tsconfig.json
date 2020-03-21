@@ -9,6 +9,7 @@
     "preserveConstEnums": true,
     "moduleResolution": "node",
     "sourceMap": true,
+    "noImplicitAny": false,
     "esModuleInterop": true
   },
   "include": [
