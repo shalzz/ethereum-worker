@@ -74,6 +74,7 @@ export class HttpClient {
         cacheHeader = this.cacheHeader(cacheTtl, staleTtl);
     };
 
+    // TODO: add a way to revalidate in case of a chain re-org.
     let response = await this.fetch(
       path,
       cacheHeader,
