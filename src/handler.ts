@@ -68,5 +68,5 @@ export async function handleRequest(request: Request) {
     return new Response('Method not allowed', { status: 403 });
   }
 
-  return httpClient.fetchWeb3('/', body);
+  return httpClient.fetchWeb3('', body);
 }

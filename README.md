@@ -90,9 +90,9 @@ capabilities of the Cloudflare network!
 
 ## Helm Charts
 
-If you are looking to quickly deploy an Ethereum client with Argo tunnel setup
-we provide Helm Charts for deploying the Ethereum `geth` and `parity` clients
-to a Kubernetes clusters with Argo tunnel running as a side car model.
+If you are looking to quickly deploy an Ethereum client with Argo tunnels setup,
+we provide Helm Charts for deploying the Ethereum  clients `geth` and `parity`
+to a Kubernetes clusters with a Argo tunnel running as a side car model.
 
 See the `helm-chart` folder and chart specific `README.md` for more details.
 

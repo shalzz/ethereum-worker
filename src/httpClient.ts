@@ -125,7 +125,7 @@ export class HttpClient {
     path: string,
     init?: RequestInit,
   ): Promise<Response> {
-    path = new URL(path, this.url).toString()
+    path = new URL(this.url.toString() + path).toString()
     init = this.initMerge(init)
 
     var response = await fetch(path, init)
