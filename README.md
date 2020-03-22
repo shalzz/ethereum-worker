@@ -16,7 +16,7 @@ within a block rather than indexing individual transactions and blocks to store
 in a database which are unlikely to change save for the latest few blocks
 (80-100 for ethereum) to account for a chain re-org.
 
-Which is why we among others like Cloudflares Ethereum Gateway service has decided to go with
+Which is why we, among others like Cloudflares Ethereum Gateway service, have decided to go with
 this approach.
 
 ## Try it for free

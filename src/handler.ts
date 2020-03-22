@@ -6,7 +6,7 @@ import { HttpClient } from './httpClient';
  */
 export async function handleRequest(request: Request) {
   const redirectLocation = 'https://github.com/shalzz/ethereum-worker';
-  const url = new URL(TUNNEL_URL);
+  const url = new URL(ORIGIN_URL);
   const headers = new Headers();
   headers.append('content-type', 'application/json;charset=UTF-8');
   const allowedMethods = [
