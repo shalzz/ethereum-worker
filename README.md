@@ -1,4 +1,11 @@
-# Ethereum worker
+<div align="center">
+
+  <h1>Ethereum worker</h1>
+  <strong>Run your own Ethereum node with CDN caching on a Raspberry Pi or the cloud</strong>
+
+</div>
+
+## About
 
 A scaling solution for Ethereum nodes by caching responses using Clouldflares
 technologies like Argo tunnels and Cloudflare workers.
