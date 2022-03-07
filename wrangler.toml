@@ -6,4 +6,4 @@ workers_dev = true
 account_id = "e921f16c347adc83c0b29f1f758a860c"
 zone_id = ""
 route = ""
-vars = { ORIGIN_URL = "https://infinite-ak-network-personals.trycloudflare.com" }
+vars = { ORIGIN_URL = "https://mainnet.infura.io/v3/a6d7aa03b97b431b891c71e7bc7e7ff8", WRITE_URL = "https://rpc.flashbots.net" }

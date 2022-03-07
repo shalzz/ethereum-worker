@@ -91,6 +91,7 @@ export class HttpClient {
       path,
       cacheHeader,
       Object.assign({ body: JSON.stringify(body) }, init || {}),
+      isWriteRequest ? WRITE_URL || "" : ""
     )
 
     // Restore the id to the response object
@@ -110,12 +111,13 @@ export class HttpClient {
     path: string,
     cacheHeader: string,
     init?: RequestInit,
+    url?: string
   ): Promise<Response> {
     const key = await this.cacheKey(path, init)
 
     var response = await this.cache.match(key, { ignoreMethod: true })
     if (!response) {
-      response = await this.fetchOrigin(path, init)
+      response = await this.fetchOrigin(path, init, url)
 
       response.headers.set(
         'Cache-control',
@@ -136,8 +138,9 @@ export class HttpClient {
   private async fetchOrigin(
     path: string,
     init?: RequestInit,
+    url?: string
   ): Promise<Response> {
-    path = new URL(this.url.toString() + path).toString()
+    path = new URL((url || this.url.toString()) + path).toString()
     init = this.initMerge(init)
 
     var response = await fetch(path, init)
