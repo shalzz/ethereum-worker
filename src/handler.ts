@@ -15,6 +15,7 @@ export async function handleRequest(request: Request) {
     'net_version',
     'net_peerCount',
     'net_listening',
+    'eth_chainId',
     'eth_protocolVersion',
     'eth_syncing',
     'eth_mining',
