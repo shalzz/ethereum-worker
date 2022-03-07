@@ -79,11 +79,23 @@ To change the `ORIGIN_URL` edit the `wrangler.toml` file and specify the URL as 
 
 ```
 vars = { ORIGIN_URL = "https://url-pointing-to-my-ethereum-node.com"}
-
 ```
 
 Now we are ready to publish. Make sure we have `workers_dev = true` set so that
 we only use the free workers tier plan.
+
+## Write Specific Endpoint
+
+Optionally you can specify a separate endpoint to use for write operations,
+for example the flashbots RPC endpoint.
+
+To do so, specify a `WRITE_URL` var in your `wrangler.toml` file
+
+```
+vars = { ORIGIN_URL = "https://url-pointing-to-my-ethereum-node.com", WRITE_URL = "https://rpc.flashbots.net" }
+```
+
+## Publish
 
 To publish all we need to do now it run the command
 
