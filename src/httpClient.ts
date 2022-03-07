@@ -51,7 +51,18 @@ export class HttpClient {
 
     let cacheHeader;
     let defaultBlock;
+    let isWriteRequest = false;
+
     switch (method) {
+      case "eth_sendRawTransaction":
+        isWriteRequest = true;
+        break;
+      // Should always be from the latest block
+      case "eth_blockNumber":
+      case "eth_estimateGas":
+        defaultBlock = "latest";
+        break;
+      // Extract the blocknumber / label
       case "eth_getBalance":
       case "eth_getCode":
       case "eth_getTransactionCount":
