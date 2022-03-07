@@ -56,7 +56,6 @@ export class HttpClient {
     switch (method) {
       case "eth_sendRawTransaction":
         isWriteRequest = true;
-        break;
       // Should always be from the latest block
       case "eth_blockNumber":
       case "eth_estimateGas":
