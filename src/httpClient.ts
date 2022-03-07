@@ -36,9 +36,9 @@ export class HttpClient {
   public async fetchWeb3(
     path: string,
     body: any,
-    init?: RequestInit,
     cacheTtl?: number,
     staleTtl?: number,
+    init?: RequestInit,
   ): Promise<Response> {
 
     // Store the original id from the request
@@ -85,7 +85,8 @@ export class HttpClient {
         cacheHeader = this.cacheHeader(cacheTtl, staleTtl);
     };
 
-    // TODO: add a way to revalidate in case of a chain re-org.
+    // In case of a chain re-org, `staleTtl` specifies how long we serve
+    // the stale content via the "stale-while-revalidate" headers
     let response = await this.fetch(
       path,
       cacheHeader,

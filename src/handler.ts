@@ -68,5 +68,6 @@ export async function handleRequest(request: Request) {
     return new Response('Method not allowed', { status: 403 });
   }
 
-  return httpClient.fetchWeb3('', body);
+  // Cache for 7 days (604800) and serve stale content for 1 min.
+  return httpClient.fetchWeb3('', body, 604800, 60);
 }
