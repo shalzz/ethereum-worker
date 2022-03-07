@@ -36,9 +36,9 @@ export class HttpClient {
   public async fetchWeb3(
     path: string,
     body: any,
-    init?: RequestInit,
     cacheTtl?: number,
     staleTtl?: number,
+    init?: RequestInit,
   ): Promise<Response> {
 
     // Store the original id from the request
