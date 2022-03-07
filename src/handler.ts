@@ -65,7 +65,12 @@ export async function handleRequest(request: Request) {
   const body = await request.json();
 
   if (!body.method || !allowedMethods.includes(body.method)) {
-    return new Response('Method not allowed', { status: 403 });
+    let response = {
+      id: body.id,
+      jsonrpc:"2.0",
+      error:{"code":-32601,"message":`The method ${body.method} does not exist/is not available`}
+    }
+    return new Response(JSON.stringify(response), { status: 200 });
   }
 
   // Cache for 7 days (604800) and serve stale content for 1 min.
