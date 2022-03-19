@@ -48,6 +48,7 @@ export async function handleRequest(request: Request) {
     'eth_submitWork',
     'eth_submitHashrate',
     'eth_getProof',
+    'eth_feeHistory',
   ];
 
   const httpClient = new HttpClient(url, <RequestInit>{

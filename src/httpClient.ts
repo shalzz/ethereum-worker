@@ -59,6 +59,8 @@ export class HttpClient {
       // Should always be from the latest block
       case "eth_blockNumber":
       case "eth_estimateGas":
+      case "eth_feeHistory":
+      case "eth_gasPrice":
         defaultBlock = "latest";
         break;
       // Extract the blocknumber / label
