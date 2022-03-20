@@ -54,9 +54,9 @@ export class HttpClient {
     let isWriteRequest = false;
 
     switch (method) {
+      // Should always be from the latest block
       case "eth_sendRawTransaction":
         isWriteRequest = true;
-      // Should always be from the latest block
       case "eth_blockNumber":
       case "eth_estimateGas":
       case "eth_feeHistory":
