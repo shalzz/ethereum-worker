@@ -67,7 +67,6 @@ export class HttpClient {
       case "eth_getBalance":
       case "eth_getCode":
       case "eth_getTransactionCount":
-      case "eth_getBalance":
       case "eth_call":
         defaultBlock = params[1];
         break;
@@ -96,7 +95,16 @@ export class HttpClient {
     )
 
     // Restore the id to the response object
-    let resBody = await response.json();
+    let resBody;
+    try {
+      resBody = await response.json();
+    } catch (e) {
+      const text = await response.text();
+      return new Response(
+        JSON.stringify({ id, jsonrpc: '2.0', error: { code: -32000, message: text || 'upstream returned a non-JSON response' } }),
+        { status: response.status, headers: { 'content-type': 'application/json' } },
+      );
+    }
     resBody.id = id;
 
     return new Response(JSON.stringify(resBody), response);
